@@ -209,12 +209,4 @@ pip install streamlit pandas openpyxl plotly
 
 ---
 
-## Kontak Bantuan
-
-Jika mengalami kendala yang tidak dapat diatasi, hubungi:
-- **Tim IT**: [Sesuaikan dengan kontak yang tersedia]
-- **Email**: [Sesuaikan dengan email yang tersedia]
-
----
-
 *Dokumen ini dibuat untuk membantu pengguna non-teknis dalam mengoperasikan Sistem Informasi Perizinan DPMPTSP.*
