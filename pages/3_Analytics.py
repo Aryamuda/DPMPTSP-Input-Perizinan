@@ -84,23 +84,16 @@ metrics = db.get_analytics_metrics(period=period_params)
 # Metric Cards
 st.subheader("Metrik Utama")
 
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 with col1:
-    st.metric(
-        label="Rata-rata SLA",
-        value=f"{metrics.get('avg_sla', 0)} Hari",
-        help="Rata-rata waktu proses dari permohonan hingga izin terbit"
-    )
-
-with col2:
     st.metric(
         label="Jumlah Pelaku Usaha",
         value=metrics['jumlah_pelaku'],
         help="Jumlah pelaku usaha unik berdasarkan NIK"
     )
 
-with col3:
+with col2:
     st.metric(
         label="Total NIB",
         value=metrics['total_nib'],
