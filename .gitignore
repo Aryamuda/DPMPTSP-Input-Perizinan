@@ -22,8 +22,3 @@ __pycache__/
 # System files
 .DS_Store
 Thumbs.db
-
-# instruction
-.github/copilot-instructions.md
-
-.gitignore
