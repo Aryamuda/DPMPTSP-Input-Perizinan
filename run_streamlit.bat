@@ -18,4 +18,4 @@ if %errorlevel% neq 0 (
 pip install -r requirements.txt
 
 :: Run the Streamlit app
-streamlit run app.py
+python -m streamlit run app.py
