@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# SQLite database
+*.db
+
+# Excel files
+*.xlsx
+
+# Environment
+.env
+
+# VS Code settings
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# instruction
+.github/copilot-instructions.md
