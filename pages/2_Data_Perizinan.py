@@ -14,8 +14,16 @@ def hitung_sisa_hari(expired_date):
     if not expired_date:
         return None
     today = datetime.now()
-    delta = expired_date - today
-    return delta.days
+    if str(expired_date).lower() == 'seumur hidup':
+        return 99999  # Code for lifetime
+    try:
+        if isinstance(expired_date, str):
+            expired_date = datetime.strptime(expired_date, '%Y-%m-%d')
+        today = datetime.now()
+        delta = expired_date - today
+        return delta.days
+    except:
+        return None
 
 def format_date(date_str):
     """Convert YYYY-MM-DD to DD/MM/YY"""
@@ -50,7 +58,10 @@ if data:
         data_dict = dict(zip(columns, row))
         # Parse masa berlaku langsung sebagai tanggal
         try:
-            expired_date = datetime.strptime(data_dict['masa_berlaku'], '%Y-%m-%d') if data_dict['masa_berlaku'] else None
+            if data_dict['masa_berlaku'] == 'Seumur Hidup':
+                expired_date = 'Seumur Hidup'
+            else:
+                expired_date = datetime.strptime(data_dict['masa_berlaku'], '%Y-%m-%d') if data_dict['masa_berlaku'] else None
         except:
             expired_date = None
         
@@ -65,6 +76,9 @@ if data:
     perhatian = [d for d in data_list if d['sisa_hari'] is not None and 31 <= d['sisa_hari'] <= 90]
     expired = [d for d in data_list if d['sisa_hari'] is not None and d['sisa_hari'] < 0]
     aman = [d for d in data_list if d['sisa_hari'] is not None and d['sisa_hari'] > 90]
+    seumur_hidup = [d for d in data_list if d['sisa_hari'] == 99999]
+    # Remove seumur hidup from aman list if it got there (99999 > 90)
+    aman = [d for d in aman if d['sisa_hari'] != 99999]
     
     # Dashboard Metrics
     col1, col2, col3, col4 = st.columns(4)
@@ -101,7 +115,7 @@ if data:
         valid_data.sort(key=lambda x: x['sisa_hari'], reverse=True)
     
     # Tabs untuk kategori
-    tab1, tab2, tab3, tab4 = st.tabs(["🔴 KRITIS", "🟡 PERHATIAN", "⚫ EXPIRED", "🟢 SEMUA DATA"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔴 KRITIS", "🟡 PERHATIAN", "⚫ EXPIRED", "🟢 AMAN", "🔵 SEUMUR HIDUP"])
     
     with tab1:
         st.subheader(f"Izin Kritis - Expired ≤ 30 Hari ({len(kritis)} Data)")
@@ -161,26 +175,41 @@ if data:
             st.success("Tidak ada izin yang expired.")
     
     with tab4:
-        st.subheader(f"Semua Data Izin ({len(valid_data)} Data)")
-        for idx, item in enumerate(valid_data, 1):
-            with st.container():
-                col1, col2, col3 = st.columns([3, 2, 1])
-                with col1:
-                    st.write(f"**{idx}. {item['nama_pengguna_layanan']}**")
-                    st.caption(f"Nomor Izin: {item['nomor_izin']}")
-                with col2:
-                    st.write(f"Tanggal Izin: {format_date(item['tanggal_izin'])}")
-                    st.write(f"Masa Berlaku: {format_date(item['masa_berlaku'])}")
-                with col3:
-                    if item['sisa_hari'] < 0:
-                        st.error(f"**Expired {abs(item['sisa_hari'])} hari lalu**")
-                    elif item['sisa_hari'] <= 30:
-                        st.error(f"**{item['sisa_hari']} hari lagi**")
-                    elif item['sisa_hari'] <= 90:
-                        st.warning(f"**{item['sisa_hari']} hari lagi**")
-                    else:
+        st.subheader(f"Izin Aman - Expired > 90 Hari ({len(aman)} Data)")
+        if aman:
+            aman_sorted = sorted(aman, key=lambda x: x['sisa_hari'])
+            for idx, item in enumerate(aman_sorted, 1):
+                with st.container():
+                    col1, col2, col3 = st.columns([3, 2, 1])
+                    with col1:
+                        st.write(f"**{idx}. {item['nama_pengguna_layanan']}**")
+                        st.caption(f"Nomor Izin: {item['nomor_izin']}")
+                    with col2:
+                        st.write(f"Tanggal Izin: {format_date(item['tanggal_izin'])}")
+                        st.write(f"Masa Berlaku: {format_date(item['masa_berlaku'])}")
+                    with col3:
                         st.success(f"**{item['sisa_hari']} hari lagi**")
-                st.markdown("---")
+                    st.markdown("---")
+        else:
+            st.info("Tidak ada izin dalam kategori aman.")
+    
+    with tab5:
+        st.subheader(f"Izin Seumur Hidup ({len(seumur_hidup)} Data)")
+        if seumur_hidup:
+            for idx, item in enumerate(seumur_hidup, 1):
+                with st.container():
+                    col1, col2, col3 = st.columns([3, 2, 1])
+                    with col1:
+                        st.write(f"**{idx}. {item['nama_pengguna_layanan']}**")
+                        st.caption(f"Nomor Izin: {item['nomor_izin']}")
+                    with col2:
+                        st.write(f"Tanggal Izin: {format_date(item['tanggal_izin'])}")
+                        st.write(f"Masa Berlaku: {item['masa_berlaku']}")
+                    with col3:
+                        st.info(f"**Seumur Hidup**")
+                    st.markdown("---")
+        else:
+            st.info("Tidak ada izin seumur hidup.")
 
 else:
     st.info("Belum ada data perizinan.")

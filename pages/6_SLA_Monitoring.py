@@ -31,8 +31,15 @@ def hitung_sla(tanggal_permohonan, tanggal_izin):
     except:
         return None
 
+import os
+
 def load_sektor():
-    with open('a.txt', 'r') as f:
+    # Get standard path relative to this file (pages/...) -> root is parent
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(current_dir)
+    file_path = os.path.join(root_dir, 'a.txt')
+    
+    with open(file_path, 'r') as f:
         return [line.strip() for line in f if line.strip()]
 
 # Header

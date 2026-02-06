@@ -16,8 +16,15 @@ BULAN_INDONESIA = {
     9: 'September', 10: 'Oktober', 11: 'November', 12: 'Desember'
 }
 
+import os
+
 def load_sektor():
-    with open('a.txt', 'r') as f:
+    # Get standard path relative to this file (pages/...) -> root is parent
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(current_dir)
+    file_path = os.path.join(root_dir, 'a.txt')
+    
+    with open(file_path, 'r') as f:
         return [line.strip() for line in f if line.strip()]
 
 def get_jenis_dokumen_options(kategori):
@@ -77,6 +84,7 @@ def create_export_dataframe(df_source):
             nomor_tgl_permohonan = '-'
         
         export_row = {
+            'No': idx + 1,
             'ID': row['ID'],
             'Sektor': row['Sektor'] if pd.notna(row['Sektor']) else '-',
             'Jenis Perizinan': row['Kategori'] if pd.notna(row['Kategori']) else '-',
@@ -206,6 +214,11 @@ if data:
     
     # Add checkbox column for selection
     df_with_select = df_filtered.copy()
+    
+    # Add Visual Number Column (No)
+    df_with_select.insert(0, 'No', range(1, len(df_with_select) + 1))
+    
+    # Add Checkbox Column
     df_with_select.insert(0, 'Pilih', False)
     
     # Columns that should not be editable
@@ -218,12 +231,15 @@ if data:
     
     edited_df = st.data_editor(
         df_with_select,
-        use_container_width=True,
+        # use_container_width=True,
+        # User requested width='stretch' (likely custom/older version requirement)
+        width='stretch',
         hide_index=True,
         disabled=disabled_cols,
         num_rows="fixed",
         column_config={
             "Pilih": st.column_config.CheckboxColumn("Pilih", default=False),
+            "No": st.column_config.NumberColumn("No", disabled=True, width="small"),
             "ID": st.column_config.NumberColumn("ID", disabled=True),
             "Sektor": st.column_config.SelectboxColumn("Sektor", options=load_sektor()),
             "Kategori": st.column_config.SelectboxColumn("Kategori", options=['Perizinan', 'Perizinan Berusaha', 'Non-Perizinan']),
@@ -254,9 +270,9 @@ if data:
             for idx, edited_row in edited_df.iterrows():
                 original_row = df_with_select.loc[idx]
                 
-                # Check if row was modified (excluding Pilih column)
-                edited_data = edited_row.drop('Pilih')
-                original_data = original_row.drop('Pilih')
+                # Check if row was modified (excluding Pilih and No from comparison)
+                edited_data = edited_row.drop(['Pilih', 'No'])
+                original_data = original_row.drop(['Pilih', 'No'])
                 
                 if not edited_data.equals(original_data):
                     try:

@@ -6,8 +6,15 @@ from database import insert_perizinan
 
 # Page config is handled by app.py
 
+import os
+
 def load_sektor():
-    with open('a.txt', 'r') as f:
+    # Get standard path relative to this file (pages/...) -> root is parent
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(current_dir)
+    file_path = os.path.join(root_dir, 'a.txt')
+    
+    with open(file_path, 'r') as f:
         return [line.strip() for line in f if line.strip()]
 
 def clean_nib(value):
@@ -46,6 +53,11 @@ def parse_indonesian_date(date_str):
         return ''
     
     text = str(date_str).strip()
+    
+    # Handle "Seumur Hidup" variations
+    lifetime_terms = ['seumur hidup', 'selamanya', 'selama perusahaan berdiri', 'selama beroperasi']
+    if any(term in text.lower() for term in lifetime_terms):
+        return 'Seumur Hidup'
     
     # Month mapping
     months = {

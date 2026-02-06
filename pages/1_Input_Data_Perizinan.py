@@ -9,9 +9,16 @@ st.set_page_config(
     layout="wide"
 )
 
+import os
+
 # Load daftar sektor dari file
 def load_sektor():
-    with open('a.txt', 'r', encoding='utf-8') as f:
+    # Get standard path relative to this file (pages/...) -> root is parent
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(current_dir)
+    file_path = os.path.join(root_dir, 'a.txt')
+    
+    with open(file_path, 'r', encoding='utf-8') as f:
         sektor_list = [line.strip() for line in f.readlines() if line.strip()]
     return sektor_list
 
@@ -119,8 +126,17 @@ else:
     nomor_tanggal_permohonan_rekomendasi = text_input_with_autocomplete("No. & Tgl Permohonan Rekomendasi", "nomor_tanggal_permohonan_rekomendasi", "nomor_tgl_perm_rek")
     nomor_tanggal_rekomendasi = text_input_with_autocomplete("No. & Tgl Rekomendasi", "nomor_tanggal_rekomendasi", "nomor_tgl_rek")
     nomor_izin = text_input_with_autocomplete("Nomor Izin", "nomor_izin", "nomor_izin")
-    tanggal_izin = st.date_input("Tanggal Izin", value=None, key="tgl_izin")
-    tanggal_berlaku_hingga = st.date_input("Berlaku Hingga", value=None, key="tgl_berlaku_hingga")
+    col_u1, col_u2 = st.columns([1, 1])
+    with col_u1:
+        tanggal_izin = st.date_input("Tanggal Izin", value=None, key="tgl_izin")
+    
+    with col_u2:
+        is_seumur_hidup = st.checkbox("Berlaku Seumur Hidup", value=False)
+        if is_seumur_hidup:
+            st.text_input("Berlaku Hingga", value="Seumur Hidup", disabled=True, key="tgl_berlaku_display")
+            tanggal_berlaku_hingga = None
+        else:
+            tanggal_berlaku_hingga = st.date_input("Berlaku Hingga", value=None, key="tgl_berlaku_hingga")
     npwp = text_input_with_autocomplete("NPWP", "npwp", "npwp")
     telepon = text_input_with_autocomplete("Telepon", "telepon", "telepon")
     email = text_input_with_autocomplete("Email", "email", "email")
@@ -187,7 +203,7 @@ else:
                 'nomor_tanggal_rekomendasi': nomor_tanggal_rekomendasi,
                 'nomor_izin': nomor_izin,
                 'tanggal_izin': str(tanggal_izin) if tanggal_izin else '',
-                'masa_berlaku': str(tanggal_berlaku_hingga) if tanggal_berlaku_hingga else '',
+                'masa_berlaku': 'Seumur Hidup' if is_seumur_hidup else (str(tanggal_berlaku_hingga) if tanggal_berlaku_hingga else ''),
                 'npwp': npwp,
                 'telepon': telepon,
                 'email': email,
