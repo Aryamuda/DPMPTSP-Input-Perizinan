@@ -1,63 +1,70 @@
-# Sistem Informasi Perizinan DPMPTSP
+# DPMPTSP Permit Information System
 
-Aplikasi manajemen data perizinan berbasis web untuk Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Provinsi Lampung.
+A web-based permit management web application for the Lampung Province Department of Investment and One-Stop Integrated Services.
 
-## Fitur
+## Features
 
-- **Input Data**: Memasukkan data perizinan baru dengan autocomplete
-- **Masa Berlaku**: Memantau status masa berlaku perizinan
-- **SLA Monitoring**: Memantau ketepatan waktu penyelesaian
-- **Tabel Data**: Melihat dan mengedit data dalam bentuk tabel
-- **Import Data**: Mengimpor data dari file Excel
-- **Dashboard**: Visualisasi dan analitik data
+- **Data Entry**: Input new permit data with text autocomplete features.
+- **Validity Monitoring**: Monitor the validity status of permits (supports calibrated lifetime logic).
+- **SLA Monitoring**: Monitor completion timeframes against Service Level Agreements.
+- **Data Table**: View, filter, and edit data in an interactive table format.
+- **Data Import**: Automatically import data from Excel files using intelligent data mapping.
+- **Dashboard**: Data analytics and visualization (Yearly, Monthly, Quarterly basis, etc.).
 
-## Instalasi
+### Recent Updates (March 2026)
+- Added new **Risk Options** ("RENDAH", "MENENGAH RENDAH").
+- Added new **Permit Type Option** ("Perubahan").
+- Changed the **Validity Date (Masa Berlaku)** field to a flexible free-text input.
+- Standardized the lifetime validity parameter to **"Selama Pelaku Usaha Menjalankan Kegiatan Usaha"**.
+- Added the **Investment Plan Value (Rencana Investasi)** column.
 
-### Prasyarat
+## Installation
+
+### Prerequisites
 - Python 3.8+
 - pip
 
-### Langkah Instalasi
+### Installation Steps
 
 ```bash
-# Clone atau download repository
+# Clone or download the repository
 cd path/to/folder
 
-# Install dependensi
+# Install dependencies
 pip install streamlit pandas openpyxl plotly
 
-# Jalankan aplikasi
+# Run the application
 streamlit run app.py
 ```
 
-Aplikasi akan terbuka di browser pada `http://localhost:8501`
+The application will open in your browser at `http://localhost:8501`.
 
-## Struktur Folder
+## Folder Structure
 
 ```
 /
-├── app.py                 # Entry point aplikasi
-├── database.py            # Fungsi database SQLite
-├── perizinan.db           # Database SQLite
-├── a.txt                  # Daftar sektor
-├── extractor.py           # Ekstraksi data Excel (standalone)
+├── app.py                 # Application entry point
+├── database.py            # SQLite database functions
+├── perizinan.db           # SQLite database
+├── a.txt                  # List of sectors
+├── extractor.py           # Excel data extraction (standalone)
 └── pages/
-    ├── Home.py            # Halaman beranda
-    ├── 1_Input_Data.py    # Form input perizinan
-    ├── 2_Data_Perizinan.py# Data masa berlaku
-    ├── 3_Analytics.py     # Dashboard analitik
-    ├── 4_Tabel_Data.py    # Tabel data editable
-    ├── 5_Import_Data.py   # Import dari Excel
-    └── 6_SLA_Monitoring.py# Monitoring SLA
+    ├── Home.py            # Homepage
+    ├── 1_Input_Data.py    # Permit entry form
+    ├── 2_Data_Perizinan.py# Validity data / Monitoring
+    ├── 3_Analytics.py     # Analytics dashboard
+    ├── 4_Tabel_Data.py    # Editable data table
+    ├── 5_Import_Data.py   # Excel import tool
+    └── 6_SLA_Monitoring.py# SLA monitoring
 ```
 
-## Teknologi
+## Technology Stack
 
-- Streamlit (Frontend)
-- SQLite (Database)
-- Pandas (Data Processing)
-- Plotly (Visualisasi)
+- **Frontend**: Streamlit
+- **Database**: SQLite
+- **Data Processing**: Pandas
+- **Visualization**: Plotly
 
-## Lisensi
+## License
 
 Internal use only - DPMPTSP Provinsi Lampung

@@ -117,7 +117,7 @@ if data:
         valid_data.sort(key=lambda x: x['sisa_hari'], reverse=True)
     
     # Tabs untuk kategori
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔴 KRITIS", "🟡 PERHATIAN", "⚫ EXPIRED", "🟢 AMAN", "🔵 BERLAKU SELAMANYA"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔴 KRITIS", "🟡 PERHATIAN", "⚫ EXPIRED", "🟢 AMAN", "🔵 SELAMA PELAKU USAHA BEROPERASI"])
     
     with tab1:
         st.subheader(f"Izin Kritis - Expired ≤ 30 Hari ({len(kritis)} Data)")
@@ -196,7 +196,7 @@ if data:
             st.info("Tidak ada izin dalam kategori aman.")
     
     with tab5:
-        st.subheader(f"Izin Berlaku Selamanya ({len(seumur_hidup)} Data)")
+        st.subheader(f"Izin Selama Pelaku Usaha Menjalankan Kegiatan Usaha ({len(seumur_hidup)} Data)")
         if seumur_hidup:
             for idx, item in enumerate(seumur_hidup, 1):
                 with st.container():
@@ -208,10 +208,10 @@ if data:
                         st.write(f"Tanggal Izin: {format_date(item['tanggal_izin'])}")
                         st.write(f"Masa Berlaku: {item['masa_berlaku']}")
                     with col3:
-                        st.info(f"**Berlaku Selamanya**")
+                        st.info(f"**Selama Pelaku Usaha Beroperasi**")
                     st.markdown("---")
         else:
-            st.info("Tidak ada izin berlaku selamanya.")
+            st.info("Tidak ada izin selama pelaku usaha menjalankan kegiatan usaha.")
 
 else:
     st.info("Belum ada data perizinan.")
