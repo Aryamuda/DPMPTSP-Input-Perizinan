@@ -38,10 +38,18 @@ def init_database():
         email TEXT,
         keterangan TEXT,
         jenis_dokumen TEXT,
+        rencana_investasi TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     """)
+    
+    # Migrate existing databases: add rencana_investasi if not exists
+    try:
+        cursor.execute("ALTER TABLE perizinan ADD COLUMN rencana_investasi TEXT DEFAULT ''")
+        conn.commit()
+    except Exception:
+        pass  # Column already exists
     
     conn.commit()
     conn.close()
@@ -58,8 +66,8 @@ def insert_perizinan(data):
         kapasitas, jenis_permohonan, nomor_permohonan, tanggal_permohonan,
         nomor_tanggal_permohonan_rekomendasi,
         nomor_tanggal_rekomendasi, nomor_izin, tanggal_izin,
-        masa_berlaku, npwp, telepon, email, keterangan, jenis_dokumen
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        masa_berlaku, npwp, telepon, email, keterangan, jenis_dokumen, rencana_investasi
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         data['sektor'], data['kategori_perizinan'], data['nama_pengguna_layanan'], data['nib'],
         data['alamat'], data['pemilik_pengurus'], data['lokasi_usaha'],
@@ -69,7 +77,7 @@ def insert_perizinan(data):
         data['nomor_tanggal_permohonan_rekomendasi'],
         data['nomor_tanggal_rekomendasi'],
         data['nomor_izin'], data['tanggal_izin'], data['masa_berlaku'],
-        data['npwp'], data['telepon'], data['email'], data.get('keterangan', ''), data.get('jenis_dokumen', '')
+        data['npwp'], data['telepon'], data['email'], data.get('keterangan', ''), data.get('jenis_dokumen', ''), data.get('rencana_investasi', '')
     ))
     
     conn.commit()
@@ -115,7 +123,7 @@ def update_perizinan(id, data):
         nomor_tanggal_permohonan_rekomendasi = ?,
         nomor_tanggal_rekomendasi = ?, nomor_izin = ?,
         tanggal_izin = ?, masa_berlaku = ?, npwp = ?, telepon = ?, email = ?,
-        keterangan = ?, jenis_dokumen = ?, updated_at = CURRENT_TIMESTAMP
+        keterangan = ?, jenis_dokumen = ?, rencana_investasi = ?, updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
     """, (
         data['sektor'], data['kategori_perizinan'], data['nama_pengguna_layanan'], data['nib'],
@@ -126,7 +134,7 @@ def update_perizinan(id, data):
         data['nomor_tanggal_permohonan_rekomendasi'],
         data['nomor_tanggal_rekomendasi'],
         data['nomor_izin'], data['tanggal_izin'], data['masa_berlaku'],
-        data['npwp'], data['telepon'], data['email'], data.get('keterangan', ''), data.get('jenis_dokumen', ''), id
+        data['npwp'], data['telepon'], data['email'], data.get('keterangan', ''), data.get('jenis_dokumen', ''), data.get('rencana_investasi', ''), id
     ))
     
     conn.commit()

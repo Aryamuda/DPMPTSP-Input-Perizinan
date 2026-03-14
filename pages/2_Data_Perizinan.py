@@ -14,7 +14,8 @@ def hitung_sisa_hari(expired_date):
     if not expired_date:
         return None
     today = datetime.now()
-    if str(expired_date).lower() == 'seumur hidup':
+    LIFETIME_VALUE = 'selama pelaku usaha menjalankan kegiatan usaha'
+    if str(expired_date).lower() in ['seumur hidup', LIFETIME_VALUE]:
         return 99999  # Code for lifetime
     try:
         if isinstance(expired_date, str):
@@ -58,8 +59,9 @@ if data:
         data_dict = dict(zip(columns, row))
         # Parse masa berlaku langsung sebagai tanggal
         try:
-            if data_dict['masa_berlaku'] == 'Seumur Hidup':
-                expired_date = 'Seumur Hidup'
+            LIFETIME_STRINGS = ['seumur hidup', 'selama pelaku usaha menjalankan kegiatan usaha']
+            if str(data_dict['masa_berlaku']).lower() in LIFETIME_STRINGS:
+                expired_date = data_dict['masa_berlaku']
             else:
                 expired_date = datetime.strptime(data_dict['masa_berlaku'], '%Y-%m-%d') if data_dict['masa_berlaku'] else None
         except:
@@ -115,7 +117,7 @@ if data:
         valid_data.sort(key=lambda x: x['sisa_hari'], reverse=True)
     
     # Tabs untuk kategori
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔴 KRITIS", "🟡 PERHATIAN", "⚫ EXPIRED", "🟢 AMAN", "🔵 SEUMUR HIDUP"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔴 KRITIS", "🟡 PERHATIAN", "⚫ EXPIRED", "🟢 AMAN", "🔵 BERLAKU SELAMANYA"])
     
     with tab1:
         st.subheader(f"Izin Kritis - Expired ≤ 30 Hari ({len(kritis)} Data)")
@@ -194,7 +196,7 @@ if data:
             st.info("Tidak ada izin dalam kategori aman.")
     
     with tab5:
-        st.subheader(f"Izin Seumur Hidup ({len(seumur_hidup)} Data)")
+        st.subheader(f"Izin Berlaku Selamanya ({len(seumur_hidup)} Data)")
         if seumur_hidup:
             for idx, item in enumerate(seumur_hidup, 1):
                 with st.container():
@@ -206,10 +208,10 @@ if data:
                         st.write(f"Tanggal Izin: {format_date(item['tanggal_izin'])}")
                         st.write(f"Masa Berlaku: {item['masa_berlaku']}")
                     with col3:
-                        st.info(f"**Seumur Hidup**")
+                        st.info(f"**Berlaku Selamanya**")
                     st.markdown("---")
         else:
-            st.info("Tidak ada izin seumur hidup.")
+            st.info("Tidak ada izin berlaku selamanya.")
 
 else:
     st.info("Belum ada data perizinan.")

@@ -111,6 +111,7 @@ def create_export_dataframe(df_source):
             'Telepon': row['Telepon'] if pd.notna(row['Telepon']) else '-',
             'Email': row['Email'] if pd.notna(row['Email']) else '-',
             'Jenis Dokumen': row['Jenis Dokumen'] if pd.notna(row['Jenis Dokumen']) else '-',
+            'Rencana Investasi': row['Rencana Investasi'] if pd.notna(row['Rencana Investasi']) else '-',
             'Keterangan': row['Keterangan'] if pd.notna(row['Keterangan']) else '-',
         }
         export_data.append(export_row)
@@ -151,7 +152,7 @@ if data:
     columns = [
         'ID', 'Sektor', 'Kategori', 'Nama Pengguna', 'NIB', 'Alamat',
         'Pemilik/Pengurus', 'Lokasi Usaha', 'Luas Lahan', 'KBLI', 'Jenis Usaha',
-        'Resiko', 'Kapasitas', 'Jenis Permohonan', 'No. Permohonan', 'Tgl Permohonan',
+        'Resiko', 'Kapasitas', 'Rencana Investasi', 'Jenis Permohonan', 'No. Permohonan', 'Tgl Permohonan',
         'No. & Tgl Perm. Rekom', 'No. & Tgl Rekomendasi',
         'No. Izin', 'Tgl Izin', 'Masa Berlaku', 'NPWP',
         'Telepon', 'Email', 'Keterangan', 'Jenis Dokumen', 'Created At', 'Updated At'
@@ -161,7 +162,7 @@ if data:
     db_columns = [
         'id', 'sektor', 'kategori_perizinan', 'nama_pengguna_layanan', 'nib', 'alamat',
         'pemilik_pengurus', 'lokasi_usaha', 'luas_lahan_usaha', 'kbli', 'jenis_usaha',
-        'resiko', 'kapasitas', 'jenis_permohonan', 'nomor_permohonan', 'tanggal_permohonan',
+        'resiko', 'kapasitas', 'rencana_investasi', 'jenis_permohonan', 'nomor_permohonan', 'tanggal_permohonan',
         'nomor_tanggal_permohonan_rekomendasi', 'nomor_tanggal_rekomendasi',
         'nomor_izin', 'tanggal_izin', 'masa_berlaku', 'npwp',
         'telepon', 'email', 'keterangan', 'jenis_dokumen', 'created_at', 'updated_at'
@@ -243,8 +244,8 @@ if data:
             "ID": st.column_config.NumberColumn("ID", disabled=True),
             "Sektor": st.column_config.SelectboxColumn("Sektor", options=load_sektor()),
             "Kategori": st.column_config.SelectboxColumn("Kategori", options=['Perizinan', 'Perizinan Berusaha', 'Non-Perizinan']),
-            "Resiko": st.column_config.SelectboxColumn("Resiko", options=['', 'MENENGAH TINGGI', 'TINGGI', 'UMKU']),
-            "Jenis Permohonan": st.column_config.SelectboxColumn("Jenis Permohonan", options=['', 'Baru', 'Perpanjangan']),
+            "Resiko": st.column_config.SelectboxColumn("Resiko", options=['', 'RENDAH', 'MENENGAH RENDAH', 'MENENGAH TINGGI', 'TINGGI', 'UMKU']),
+            "Jenis Permohonan": st.column_config.SelectboxColumn("Jenis Permohonan", options=['', 'Baru', 'Perpanjangan', 'Perubahan']),
             "Jenis Dokumen": st.column_config.SelectboxColumn("Jenis Dokumen", options=all_jenis_dokumen),
             "Created At": st.column_config.TextColumn("Created At", disabled=True),
             "Updated At": st.column_config.TextColumn("Updated At", disabled=True),

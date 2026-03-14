@@ -117,10 +117,11 @@ else:
     kbli = text_input_with_autocomplete("KBLI", "kbli", "kbli")
     jenis_usaha = text_input_with_autocomplete("Jenis Usaha", "jenis_usaha", "jenis")
     
-    resiko = st.selectbox("Resiko", ["", "MENENGAH TINGGI", "TINGGI", "UMKU"], key="resiko")
+    resiko = st.selectbox("Resiko", ["", "RENDAH", "MENENGAH RENDAH", "MENENGAH TINGGI", "TINGGI", "UMKU"], key="resiko")
     
     kapasitas = text_input_with_autocomplete("Kapasitas", "kapasitas", "kapasitas")
-    jenis_permohonan = st.selectbox("Jenis Permohonan", ["", "Baru", "Perpanjangan"], key="jenis_perm")
+    rencana_investasi = text_input_with_autocomplete("Rencana Nilai Investasi", "rencana_investasi", "rencana_investasi")
+    jenis_permohonan = st.selectbox("Jenis Permohonan", ["", "Baru", "Perpanjangan", "Perubahan"], key="jenis_perm")
     nomor_permohonan = text_input_with_autocomplete("Nomor Permohonan", "nomor_permohonan", "nomor_perm")
     tanggal_permohonan = st.date_input("Tanggal Permohonan", value=None, key="tgl_perm")
     nomor_tanggal_permohonan_rekomendasi = text_input_with_autocomplete("No. & Tgl Permohonan Rekomendasi", "nomor_tanggal_permohonan_rekomendasi", "nomor_tgl_perm_rek")
@@ -131,12 +132,18 @@ else:
         tanggal_izin = st.date_input("Tanggal Izin", value=None, key="tgl_izin")
     
     with col_u2:
-        is_seumur_hidup = st.checkbox("Berlaku Seumur Hidup", value=False)
+        LIFETIME_LABEL = "Selama Pelaku Usaha Menjalankan Kegiatan Usaha"
+        is_seumur_hidup = st.checkbox("Berlaku Selama Pelaku Usaha Beroperasi", value=False)
         if is_seumur_hidup:
-            st.text_input("Berlaku Hingga", value="Seumur Hidup", disabled=True, key="tgl_berlaku_display")
-            tanggal_berlaku_hingga = None
+            st.text_input("Berlaku Hingga", value=LIFETIME_LABEL, disabled=True, key="tgl_berlaku_display")
+            masa_berlaku_value = LIFETIME_LABEL
         else:
-            tanggal_berlaku_hingga = st.date_input("Berlaku Hingga", value=None, key="tgl_berlaku_hingga")
+            masa_berlaku_value = st.text_input(
+                "Berlaku Hingga",
+                value="",
+                placeholder="Contoh: 2027-12-31 atau kosongkan",
+                key="tgl_berlaku_hingga"
+            )
     npwp = text_input_with_autocomplete("NPWP", "npwp", "npwp")
     telepon = text_input_with_autocomplete("Telepon", "telepon", "telepon")
     email = text_input_with_autocomplete("Email", "email", "email")
@@ -203,12 +210,13 @@ else:
                 'nomor_tanggal_rekomendasi': nomor_tanggal_rekomendasi,
                 'nomor_izin': nomor_izin,
                 'tanggal_izin': str(tanggal_izin) if tanggal_izin else '',
-                'masa_berlaku': 'Seumur Hidup' if is_seumur_hidup else (str(tanggal_berlaku_hingga) if tanggal_berlaku_hingga else ''),
+                'masa_berlaku': masa_berlaku_value,
                 'npwp': npwp,
                 'telepon': telepon,
                 'email': email,
                 'keterangan': keterangan,
-                'jenis_dokumen': jenis_dokumen
+                'jenis_dokumen': jenis_dokumen,
+                'rencana_investasi': rencana_investasi
             }
             
             try:

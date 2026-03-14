@@ -54,10 +54,10 @@ def parse_indonesian_date(date_str):
     
     text = str(date_str).strip()
     
-    # Handle "Seumur Hidup" variations
-    lifetime_terms = ['seumur hidup', 'selamanya', 'selama perusahaan berdiri', 'selama beroperasi']
+    # Handle "Seumur Hidup" / Berlaku selamanya variations
+    lifetime_terms = ['seumur hidup', 'selamanya', 'selama perusahaan berdiri', 'selama beroperasi', 'selama pelaku usaha']
     if any(term in text.lower() for term in lifetime_terms):
-        return 'Seumur Hidup'
+        return 'Selama Pelaku Usaha Menjalankan Kegiatan Usaha'
     
     # Month mapping
     months = {
