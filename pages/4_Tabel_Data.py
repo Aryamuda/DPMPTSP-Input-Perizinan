@@ -98,7 +98,7 @@ def create_export_dataframe(df_source):
             'KBLI': row['KBLI'] if pd.notna(row['KBLI']) else '-',
             'Jenis Usaha': row['Jenis Usaha'] if pd.notna(row['Jenis Usaha']) else '-',
             'Risiko': row['Resiko'] if pd.notna(row['Resiko']) else '-',
-            'Rencana Nilai Investasi': '-',  # Not in database
+            'Rencana Nilai Investasi': row['Rencana Investasi'] if pd.notna(row['Rencana Investasi']) else '-',
             'Kapasitas': row['Kapasitas'] if pd.notna(row['Kapasitas']) else '-',
             'Jenis Permohonan': row['Jenis Permohonan'] if pd.notna(row['Jenis Permohonan']) else '-',
             'Nomor & Tanggal Permohonan': nomor_tgl_permohonan,
@@ -106,12 +106,11 @@ def create_export_dataframe(df_source):
             'Nomor & Tanggal Rekomendasi': row['No. & Tgl Rekomendasi'] if pd.notna(row['No. & Tgl Rekomendasi']) else '-',
             'Nomor Izin': row['No. Izin'] if pd.notna(row['No. Izin']) else '-',
             'Tanggal Izin': format_date_full(row['Tgl Izin']),
-            'Masa Berlaku': format_date_full(row['Masa Berlaku']),
+            'Masa Berlaku': row['Masa Berlaku'] if str(row.get('Masa Berlaku', '')).lower().startswith('selama') else format_date_full(row['Masa Berlaku']),
             'NPWP': row['NPWP'] if pd.notna(row['NPWP']) else '-',
             'Telepon': row['Telepon'] if pd.notna(row['Telepon']) else '-',
             'Email': row['Email'] if pd.notna(row['Email']) else '-',
             'Jenis Dokumen': row['Jenis Dokumen'] if pd.notna(row['Jenis Dokumen']) else '-',
-            'Rencana Investasi': row['Rencana Investasi'] if pd.notna(row['Rencana Investasi']) else '-',
             'Keterangan': row['Keterangan'] if pd.notna(row['Keterangan']) else '-',
         }
         export_data.append(export_row)
