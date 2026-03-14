@@ -83,15 +83,24 @@ def insert_perizinan(data):
     conn.commit()
     conn.close()
 
+SELECT_COLS = """
+    id, sektor, kategori_perizinan, nama_pengguna_layanan, nib, alamat,
+    pemilik_pengurus, lokasi_usaha, luas_lahan_usaha, kbli, jenis_usaha,
+    resiko, kapasitas, rencana_investasi, jenis_permohonan, nomor_permohonan, tanggal_permohonan,
+    nomor_tanggal_permohonan_rekomendasi, nomor_tanggal_rekomendasi,
+    nomor_izin, tanggal_izin, masa_berlaku, npwp,
+    telepon, email, keterangan, jenis_dokumen, created_at, updated_at
+"""
+
 def get_all_perizinan(sektor=None):
     """Ambil semua data perizinan, optional filter by sektor"""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
     if sektor:
-        cursor.execute("SELECT * FROM perizinan WHERE sektor = ? ORDER BY created_at DESC", (sektor,))
+        cursor.execute(f"SELECT {SELECT_COLS} FROM perizinan WHERE sektor = ? ORDER BY created_at DESC", (sektor,))
     else:
-        cursor.execute("SELECT * FROM perizinan ORDER BY created_at DESC")
+        cursor.execute(f"SELECT {SELECT_COLS} FROM perizinan ORDER BY created_at DESC")
     
     rows = cursor.fetchall()
     conn.close()
@@ -103,7 +112,7 @@ def get_perizinan_by_id(id):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
-    cursor.execute("SELECT * FROM perizinan WHERE id = ?", (id,))
+    cursor.execute(f"SELECT {SELECT_COLS} FROM perizinan WHERE id = ?", (id,))
     row = cursor.fetchone()
     
     conn.close()

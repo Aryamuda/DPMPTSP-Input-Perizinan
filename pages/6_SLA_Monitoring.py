@@ -53,10 +53,10 @@ if data:
     columns = [
         'id', 'sektor', 'kategori_perizinan', 'nama_pengguna_layanan', 'nib', 'alamat',
         'pemilik_pengurus', 'lokasi_usaha', 'luas_lahan_usaha', 'kbli', 'jenis_usaha',
-        'resiko', 'kapasitas', 'jenis_permohonan', 'nomor_permohonan', 'tanggal_permohonan',
+        'resiko', 'kapasitas', 'rencana_investasi', 'jenis_permohonan', 'nomor_permohonan', 'tanggal_permohonan',
         'nomor_tanggal_permohonan_rekomendasi', 'nomor_tanggal_rekomendasi',
         'nomor_izin', 'tanggal_izin', 'masa_berlaku', 'npwp',
-        'telepon', 'email', 'keterangan', 'created_at', 'updated_at', 'jenis_dokumen'
+        'telepon', 'email', 'keterangan', 'jenis_dokumen', 'created_at', 'updated_at'
     ]
     
     data_list = []
